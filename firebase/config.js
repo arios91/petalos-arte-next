@@ -22,8 +22,8 @@ const firebaseConfig = {
   storageBucket: "petalos-arte.appspot.com",
   messagingSenderId: "220047130772",
   appId: "1:220047130772:web:b70df6e5da9d328a643481"
-}; */
-
+};
+ */
   const firebase = initializeApp(firebaseConfig);
 
   const projectFirestore = getFirestore(firebase);

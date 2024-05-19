@@ -22,7 +22,7 @@ const page = () => {
         if(!currentArrangement.name){
             router.push('/');
         }else{
-            setTotalPrice(currentArrangement.price);
+                        setTotalPrice(currentArrangement.price);
         }
     }, []);
 
@@ -126,9 +126,11 @@ const page = () => {
                             </div>: <Fragment/>
                             }
                             {orderedBalloons ? 
-                                <div className="mt-4">
-                                    Note: When ordering ballons, please add the occasion in the "special instructions" input in the cart before checking out in order to ensure proper balloon is used.
-                                </div> 
+                                <div className="row">
+                                    <div className="col-12 col-lg-9 my-2 text-start text-muted">
+                                        Note: When ordering ballons, please add the occasion in the "special instructions" input in the cart before checking out in order to ensure proper balloon is used.
+                                    </div> 
+                                </div>
                                 : <Fragment/>
                             }
                             <div className="row">

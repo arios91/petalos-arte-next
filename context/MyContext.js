@@ -89,21 +89,18 @@ export const ContextProvider = ({children}) => {
 
 
     const handleArrangementSelect = arrangement => {
-        if(arrangement.addonNames && arrangement.addonNames.length > 0){
-            let tmpAddons = addons.filter(addon => arrangement.addonNames.includes(addon.name));
-            tmpAddons = tmpAddons.map(addon => {
-                return {...addon, inCart: false}
-            })
-            dispatch({
-                type: 'SET_CURRENT_ADDONS',
-                payload: tmpAddons
-            })
-        }else{
-            dispatch({
-                type: 'SET_CURRENT_ADDONS',
-                payload: []
-            })
+        let tmpAddons = addons.map(addon => {
+            return {...addon, inCart: false}
+        })
+
+        if(arrangement.omitAddons && arrangement.omitAddons.length > 0){
+            tmpAddons = tmpAddons.filter(addon => !arrangement.omitAddons.includes(addon.name));
         }
+
+        dispatch({
+            type: 'SET_CURRENT_ADDONS',
+            payload: tmpAddons
+        })
         dispatch({
             type: 'SET_CURRENT_ARRANGEMENT',
             payload: arrangement
