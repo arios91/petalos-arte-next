@@ -19,7 +19,7 @@ import {buildReceipt, buildOrderEmail} from './CartFunctions'
 
 const CartPage = () => {
   const taxRate = .0825;
-  
+
 
   
   
@@ -60,7 +60,7 @@ const CartPage = () => {
       axios.post(`${apiPath}/email/sendEmail`, {
           emailBody: orderEmail,
           subject: 'Order In',
-          toEmail: 'alx.rios91@gmail.com',
+          toEmail: settings.get('orderInEmail'),
           fromEmail: 'order_in'
       });
       router.push('/receipt');
