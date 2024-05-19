@@ -19,6 +19,7 @@ import {buildReceipt, buildOrderEmail} from './CartFunctions'
 
 const CartPage = () => {
   const taxRate = .0825;
+  
 
   
   
