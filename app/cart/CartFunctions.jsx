@@ -46,10 +46,20 @@ export function getDeliveryPersonInfo(isDelivery, recipient, deliveryAddress){
     </tr>`;
 
     if(isDelivery){
+        let spacer = '%20';
+        let mapString = deliveryAddress.address.split(' ').join(spacer);
+        mapString += ',' + spacer + city + ',' + spacer + 'TX' + spacer + zip;
+
         deliveryInfo += `
         <tr>
             <td style="width: 35%; text-align:right; font-weight: bold;">Street Address:</td>
             <td style="width: 65%; text-align:left; padding-left: 25px;">${deliveryAddress.address}</td>
+            
+        </tr>
+        <tr>
+            <td style="width: 35%; text-align:right; font-weight: bold;">Mapa:</td>
+            <td style="width: 65%; text-align:left; padding-left: 25px;"><a href="http://maps.google.com/?q=${mapString}">${deliveryAddress.address}</a></td>
+            
         </tr>
         <tr>
             <td style="width: 35%; text-align:right; font-weight: bold;">City, State, Zip:</td>
