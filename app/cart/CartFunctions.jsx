@@ -3,7 +3,7 @@ const discountChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
 
 export function buildReceipt(isDelivery, deliveryDate, recipient, deliveryAddress, cartItems, details, totalPrice, paymentId, apiPath){
     let receipt = getDeliveryDateInfo(isDelivery, deliveryDate);
-    receipt += getDeliveryPersonInfo(isDelivery, recipient, deliveryAddress);
+    receipt += getDeliveryPersonInfo(isDelivery, recipient, deliveryAddress, false);
     receipt += getOrderInfo(cartItems, totalPrice)
     if(details.cardMessage !== '' || details.instructions !== ''){
         receipt += getAdditionalInfo(details);
@@ -15,7 +15,7 @@ export function buildReceipt(isDelivery, deliveryDate, recipient, deliveryAddres
 
 export function buildOrderEmail(isDelivery, deliveryDate, recipient, deliveryAddress, customer, cartItems, details, totalPrice, paymentId){
     let orderEmail = getDeliveryDateInfo(isDelivery, deliveryDate);
-    orderEmail += getDeliveryPersonInfo(isDelivery, recipient, deliveryAddress);
+    orderEmail += getDeliveryPersonInfo(isDelivery, recipient, deliveryAddress, true);
     orderEmail += getContactPersonInfo(customer);
     orderEmail += getOrderInfo(cartItems, totalPrice)
     if(details.cardMessage !== '' || details.instructions !== ''){
@@ -38,7 +38,7 @@ export function getDeliveryDateInfo(isDelivery, deliveryDate){
     return deliveryDateInfo;
 }
 
-export function getDeliveryPersonInfo(isDelivery, recipient, deliveryAddress){
+export function getDeliveryPersonInfo(isDelivery, recipient, deliveryAddress, emailBody){
     let deliveryInfo = `
     <tr>
         <td style="width: 35%; text-align:right; font-weight: bold;">${isDelivery ? 'Deliver To' : 'For'}:</td>
@@ -46,25 +46,30 @@ export function getDeliveryPersonInfo(isDelivery, recipient, deliveryAddress){
     </tr>`;
 
     if(isDelivery){
-        let spacer = '%20';
-        let mapString = deliveryAddress.address.split(' ').join(spacer);
-        mapString += ',' + spacer + city + ',' + spacer + 'TX' + spacer + zip;
+        
 
         deliveryInfo += `
         <tr>
             <td style="width: 35%; text-align:right; font-weight: bold;">Street Address:</td>
             <td style="width: 65%; text-align:left; padding-left: 25px;">${deliveryAddress.address}</td>
             
-        </tr>
-        <tr>
-            <td style="width: 35%; text-align:right; font-weight: bold;">Mapa:</td>
-            <td style="width: 65%; text-align:left; padding-left: 25px;"><a href="http://maps.google.com/?q=${mapString}">${deliveryAddress.address}</a></td>
-            
-        </tr>
+        </tr>`;
+
+        if(emailBody){
+            let spacer = '%20';
+            let mapString = deliveryAddress.address.split(' ').join(spacer);
+            mapString += ',' + spacer + deliveryAddress.city + ',' + spacer + 'TX' + spacer + deliveryAddress.zip;
+            deliveryInfo += `
+            <tr>
+                <td style="width: 35%; text-align:right; font-weight: bold;">Mapa:</td>
+                <td style="width: 65%; text-align:left; padding-left: 25px;"><a href="http://maps.google.com/?q=${mapString}">${deliveryAddress.address}</a></td>
+            </tr>`;
+        }
+        deliveryInfo += `
         <tr>
             <td style="width: 35%; text-align:right; font-weight: bold;">City, State, Zip:</td>
             <td style="width: 65%; text-align:left; padding-left: 25px;">${deliveryAddress.city}, TX ${deliveryAddress.zip}</td>
-        </tr>`
+        </tr>`;
     }
 
     deliveryInfo += `
