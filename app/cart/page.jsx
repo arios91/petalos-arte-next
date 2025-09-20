@@ -207,7 +207,8 @@ const CartPage = () => {
 
   let isDeliveryDay = date => {
     const day = date.getDay(date);
-    return day !== 0;
+    //return day !== 0;
+    return true;
   }
 
   let testFunc =  e => {
